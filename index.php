@@ -272,7 +272,9 @@ function updateNav()
     $("#navzones").empty();
     $("#navzones").append(zlist);
 
-    location.search.substr(1).split("&").forEach(function(item) { qs[item.split("=")[0]] = item.split("=")[1]})
+    location.search.substr(1).split("&").forEach(function(item) { qs[item.split("=")[0]] = decodeURIComponent(item.split("=")[1]); })
+
+    if(!qs.zone) { return; } // Without a zone the rest is meaningless.
     selectZone($("#z_"+qs.zone).get(), qs.zone);
 
     if(qs.file && !qs.create)
@@ -294,7 +296,7 @@ function selectZone(sender, z)
     activezone = z;
     $("#zonename").html("Zone: "+z)
 
-    history.pushState("page_pop", '?zone=' + z, '?zone=' + z);
+    history.pushState("page_pop", '?zone=' + encodeURIComponent(z), '?zone=' + encodeURIComponent(z));
 
     updateFiles(z);
 }
@@ -320,7 +322,7 @@ function selectFile(sender, f)
     dt.zone = activezone;
     dt.filename = f;
 
-    history.pushState("page_pop", '?zone=' + activezone + "&file=" + f , '?zone=' + activezone + "&file=" + f);
+    history.pushState("page_pop", '?zone=' + encodeURIComponent(activezone) + "&file=" + encodeURIComponent(f) , '?zone=' + encodeURIComponent(activezone) + "&file=" + encodeURIComponent(f));
 
     $.post("loadfile.php", dt, function(data) { procData(data); } );
 }
