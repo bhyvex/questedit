@@ -13,23 +13,22 @@ else { $cmt = "#"; }
 
 if(!quest_dir($test))
 {
-    die("Invalid Filename: $fpath$fn");
+    die("ERROR|Invalid Filename: $fpath$fn");
 }
 
 if(file_exists($fpath.$fn))
 {
-    die("File Exists!");
+    die("ERROR|File Exists!");
 }
 
 $fh = fopen($fpath.$fn, 'w');
 fwrite($fh, "$cmt $zone - $fn\n");
 fclose($fh);
 
-print <<<END
-<script>
-window.parent['navzone'].location.reload();
-</script>
-<meta http-equiv=refresh content='1;URL=editor.php?src=$zone/$fn'>
-END;
+$nf = array();
+$nf['zone'] = $zone;
+$nf['filename'] = $fn;
+
+print "NEWFILE|" . json_encode($nf);
 
 ?>

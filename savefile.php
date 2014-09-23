@@ -3,19 +3,26 @@
 include("quests.php");
 
 $fn = $_POST['filename'];
-$content = $_POST['content'];
+$zone = $_POST['zone'];
+$content = $_POST['file'];
 
-if(!quest_dir($fn))
+$savefile = $qdir.$zone."/".$fn;
+
+if(!quest_dir($savefile))
 {
     die("ERROR|Bad filename!");
 }
 
-$fh = fopen($fn, "w");
-if(!$fh) { die("ERROR|Unable to open file: $fn"); }
+$fh = fopen($savefile, "w");
+if(!$fh) { die("ERROR|Unable to open file: $savefile"); }
 
 fwrite($fh, $content);
 fclose($fh);
 
-print "SAVED|$fn";
+$ret = array();
+$ret['filename'] = $fn;
+$ret['zone'] = $zone;
+
+print "SAVED|".json_encode($ret);;
 
 ?>
