@@ -336,6 +336,20 @@ function newFile()
     $.post("createfile.php", fd, function(data) { procData(data); } );
 }
 
+function loadFileByNPC(lz, lnpc)
+{
+    var len = lnpc.length;
+    selectZone($("#z_"+lz).get(), lz);
+
+    for(var x in questfiles[lz])
+    {
+        if(questfiles[lz][x].substr(0, len) == lnpc)
+        {
+            selectFile(null, questfiles[lz][x]);
+        }
+    }
+}
+
 function loadFile(fd)
 {
     //If this is a file we already have open we should compare the two.
